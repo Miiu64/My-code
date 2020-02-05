@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
 import com.revrobotics.ColorMatch;
@@ -16,36 +9,16 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 
-/**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the TimedRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the build.gradle file in the
- * project.
- */
 public class Robot extends TimedRobot {
-  /**
-   * Change the I2C port below to match the connection of your color sensor
-   */
+
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
 
-  /**
-   * A Rev Color Sensor V3 object is constructed with an I2C port as a 
-   * parameter. The device will be automatically initialized with default 
-   * parameters.
-   */
- /* private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
-  private final ColorMatch m_colorMatcher = new ColorMatch();
-  private final Color kBlueTarget = ColorMatch.makeColor(0.171, 0.438, 0.391);
-  private final Color kGreenTarget = ColorMatch.makeColor(0.209, 0.532, 0.258);
-  private final Color kRedTarget = ColorMatch.makeColor(0.421, 0.393, 0.183);
-  private final Color kYellowTarget = ColorMatch.makeColor(0.315, 0.531, 0.152); */  //Mary's number with polycarb
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
   ColorMatch m_colorMatcher = new ColorMatch();
   private final Color kBlueTarget = ColorMatch.makeColor(0.231, 0.463, 0.305);
   private final Color kGreenTarget = ColorMatch.makeColor(0.240, 0.485, 0.274);
   private final Color kRedTarget = ColorMatch.makeColor(0.293, 0.452, 0.253);
-  private final Color kYellowTarget = ColorMatch.makeColor(0.284, 0.491, 0.223); //Vikram's numbers with the polycarb
+  private final Color kYellowTarget = ColorMatch.makeColor(0.284, 0.491, 0.223); 
 
 
 
@@ -58,16 +31,6 @@ public class Robot extends TimedRobot {
   }
   @Override
   public void robotPeriodic() {
-    /**
-     * The method GetColor() returns a normalized color value from the sensor and can be
-     * useful if outputting the color to an RGB LED or similar. To
-     * read the raw color, use GetRawColor().
-     * 
-     * The color sensor works best when within a few inches from an object in
-     * well lit conditions (the built in LED is a big help here!). The farther
-     * an object is the more light from the surroundings will bleed into the 
-     * measurements and make it difficult to accurately determine its color.
-     */
     int proximity = m_colorSensor.getProximity();
     SmartDashboard.putNumber("Proximity", proximity);
     Color detectedColor = m_colorSensor.getColor();
