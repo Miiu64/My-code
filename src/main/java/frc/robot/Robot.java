@@ -36,7 +36,8 @@ public class Robot extends TimedRobot {
     Color detectedColor = m_colorSensor.getColor();
     ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);
     String colorString = "initialized string";
-    if (proximity > 400)
+    SmartDashboard.putNumber("Proximity wow", proximity);
+    if (proximity > 190)
     {
     if (match.color == kBlueTarget) {
       colorString = "Blue";
