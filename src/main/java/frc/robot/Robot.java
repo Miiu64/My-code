@@ -4,6 +4,7 @@ import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -120,6 +121,30 @@ public class Robot extends TimedRobot {
       theColor = "Too Far Away";
     }
     SmartDashboard.putString("Detected Color", theColor);
+}
+public void PositionControl()
+{
+  String destColor = DriverStation.getInstance().getGameSpecificMessage();
+  if (destColor.equals("Yellow"))
+  {
+    destColor = "Green";
+  }
+  else if (destColor.equals("Blue"))
+  {
+    destColor = "Red";
+  }
+  else if (destColor.equals("Green"))
+  {
+    destColor = "Yellow";
+  }
+  else if (destColor.equals("Red"))
+  {
+    destColor = "Blue";
+  }
+  if (!theColor.equals(destColor))
+  {
+    RobotContainer.frictionWheel.setMotorSpeed(Constants.frictionWheelSpeed);
+  }
 }
 }
   
