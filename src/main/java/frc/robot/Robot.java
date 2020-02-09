@@ -19,7 +19,7 @@ public class Robot extends TimedRobot {
   private final Color kGreenTarget = ColorMatch.makeColor(0.240, 0.485, 0.274);
   private final Color kRedTarget = ColorMatch.makeColor(0.293, 0.452, 0.253);
   private final Color kYellowTarget = ColorMatch.makeColor(0.284, 0.491, 0.223); 
-
+  private String theColor;
 
 
   @Override
@@ -29,12 +29,16 @@ public class Robot extends TimedRobot {
     m_colorMatcher.addColorMatch(kRedTarget);
     m_colorMatcher.addColorMatch(kYellowTarget);
   }
-
-
+  
   @Override
-  public void robotPeriodic() {
+  public void robotPeriodic() 
+  {
+    getColor();
+  }
+
+
+  public void getColor() {
     int proximity = m_colorSensor.getProximity();
-    SmartDashboard.putNumber("Proximity", proximity);
     Color detectedColor = m_colorSensor.getColor();
     ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);
     String colorString = "initialized colorstring";
@@ -54,12 +58,12 @@ public class Robot extends TimedRobot {
         colorString = "Unknown";
       }
       
-      SmartDashboard.putNumber("Red", detectedColor.red);
-      SmartDashboard.putNumber("Green", detectedColor.green);
-      SmartDashboard.putNumber("Blue", detectedColor.blue);
-      SmartDashboard.putNumber("Confidence", match.confidence);
-      SmartDashboard.putString("Detected Color", colorString);
-      SmartDashboard.putNumber("Proximity", proximity);
+      theColor = colorString;
+
+      for (int i = 999; i > 0; i--)
+      {
+
+      }
       Color detectedColor_temp = m_colorSensor.getColor();
       ColorMatchResult match_temp = m_colorMatcher.matchClosestColor(detectedColor_temp);
       String colorString_temp = "initialized coloring temp";
@@ -76,154 +80,47 @@ public class Robot extends TimedRobot {
 
       if (!colorString_temp.equals(colorString))
       {
-        while (true)
-        {
+       // while (true)
+       //{
           if (colorString.equals("Yellow"))
           {
-            if (!colorString_temp.equals("Blue") || colorString_temp.equals("Green"))
+            if (colorString_temp.equals("Blue") && !colorString_temp.equals("Green"))
             {
-              while(!colorString_temp.equals("Blue") || colorString_temp.equals("Green"))
-              {
-                SmartDashboard.putNumber("Red", detectedColor.red);
-                SmartDashboard.putNumber("Green", detectedColor.green);
-                SmartDashboard.putNumber("Blue", detectedColor.blue);
-                SmartDashboard.putNumber("Confidence", match.confidence);
-                SmartDashboard.putString("Detected Color", "Yellow");
-                SmartDashboard.putNumber("Proximity", proximity);
-                detectedColor_temp = m_colorSensor.getColor();
-                match_temp = m_colorMatcher.matchClosestColor(detectedColor_temp);
-                if (match_temp.color == kBlueTarget) {
-                  colorString_temp = "Blue";
-                } else if (match_temp.color == kRedTarget) {
-                  colorString_temp = "Red";
-                } else if (match_temp.color == kGreenTarget) {
-                  colorString_temp = "Green";
-                } else if (match_temp.color == kYellowTarget) {
-                  colorString_temp = "Yellow";
-                }
-              }
-              colorString_temp = "Blue";
-              SmartDashboard.putNumber("Red", detectedColor.red);
-              SmartDashboard.putNumber("Green", detectedColor.green);
-              SmartDashboard.putNumber("Blue", detectedColor.blue);
-              SmartDashboard.putNumber("Confidence", match.confidence);
-              SmartDashboard.putString("Detected Color", colorString_temp);
-              SmartDashboard.putNumber("Proximity", proximity);
+            //  while(!colorString_temp.equals("Blue") || colorString_temp.equals("Green"))
+              //{
+                theColor = "Blue";
+              //}
             }
           }
           else if (colorString.equals("Green"))
           {
-            if (!colorString_temp.equals("Red") || colorString_temp.equals("Yellow"))
+            if (colorString_temp.equals("Red") && !colorString_temp.equals("Yellow"))
             {
-              while(!colorString_temp.equals("Red") || colorString_temp.equals("Yellow"))
-              {
-                SmartDashboard.putNumber("Red", detectedColor.red);
-                SmartDashboard.putNumber("Green", detectedColor.green);
-                SmartDashboard.putNumber("Blue", detectedColor.blue);
-                SmartDashboard.putNumber("Confidence", match.confidence);
-                SmartDashboard.putString("Detected Color", "Green");
-                SmartDashboard.putNumber("Proximity", proximity);
-                detectedColor_temp = m_colorSensor.getColor();
-                match_temp = m_colorMatcher.matchClosestColor(detectedColor_temp);
-                if (match_temp.color == kBlueTarget) {
-                  colorString_temp = "Blue";
-                } else if (match_temp.color == kRedTarget) {
-                  colorString_temp = "Red";
-                } else if (match_temp.color == kGreenTarget) {
-                  colorString_temp = "Green";
-                } else if (match_temp.color == kYellowTarget) {
-                  colorString_temp = "Yellow";
-                }
-              }
-              colorString_temp = "Red";
-              SmartDashboard.putNumber("Red", detectedColor.red);
-              SmartDashboard.putNumber("Green", detectedColor.green);
-              SmartDashboard.putNumber("Blue", detectedColor.blue);
-              SmartDashboard.putNumber("Confidence", match.confidence);
-              SmartDashboard.putString("Detected Color", colorString_temp);
-              SmartDashboard.putNumber("Proximity", proximity);
+              theColor = "Red";
             }
           }
           else if (colorString.equals("Red"))
           {
-            if (!colorString_temp.equals("Yellow"))
+            if (colorString_temp.equals("Yellow"))
             {
-              while(!colorString_temp.equals("Yellow"))
-              {
-                SmartDashboard.putNumber("Red", detectedColor.red);
-                SmartDashboard.putNumber("Green", detectedColor.green);
-                SmartDashboard.putNumber("Blue", detectedColor.blue);
-                SmartDashboard.putNumber("Confidence", match.confidence);
-                SmartDashboard.putString("Detected Color", "Red");
-                SmartDashboard.putNumber("Proximity", proximity);
-                detectedColor_temp = m_colorSensor.getColor();
-                match_temp = m_colorMatcher.matchClosestColor(detectedColor_temp);
-                if (match_temp.color == kBlueTarget) {
-                  colorString_temp = "Blue";
-                } else if (match_temp.color == kRedTarget) {
-                  colorString_temp = "Red";
-                } else if (match_temp.color == kGreenTarget) {
-                  colorString_temp = "Green";
-                } else if (match_temp.color == kYellowTarget) {
-                  colorString_temp = "Yellow";
-                }
-              }
-              colorString_temp = "Yellow";
-              SmartDashboard.putNumber("Red", detectedColor.red);
-              SmartDashboard.putNumber("Green", detectedColor.green);
-              SmartDashboard.putNumber("Blue", detectedColor.blue);
-              SmartDashboard.putNumber("Confidence", match.confidence);
-              SmartDashboard.putString("Detected Color", colorString_temp);
-              SmartDashboard.putNumber("Proximity", proximity);
+              theColor = "Yellow";
             }
           }
           else if (colorString.equals("Blue"))
           {
-            if (!colorString_temp.equals("Green"))
+            if (colorString_temp.equals("Green"))
             {
-              while(!colorString_temp.equals("Green"))
-              {
-                SmartDashboard.putNumber("Red", detectedColor.red);
-                SmartDashboard.putNumber("Green", detectedColor.green);
-                SmartDashboard.putNumber("Blue", detectedColor.blue);
-                SmartDashboard.putNumber("Confidence", match.confidence);
-                SmartDashboard.putString("Detected Color", "Blue");
-                SmartDashboard.putNumber("Proximity", proximity);
-                detectedColor_temp = m_colorSensor.getColor();
-                match_temp = m_colorMatcher.matchClosestColor(detectedColor_temp);
-                if (match_temp.color == kBlueTarget) {
-                  colorString_temp = "Blue";
-                } else if (match_temp.color == kRedTarget) {
-                  colorString_temp = "Red";
-                } else if (match_temp.color == kGreenTarget) {
-                  colorString_temp = "Green";
-                } else if (match_temp.color == kYellowTarget) {
-                  colorString_temp = "Yellow";
-                }
-              }
-              colorString_temp = "Green";
-              SmartDashboard.putNumber("Red", detectedColor.red);
-              SmartDashboard.putNumber("Green", detectedColor.green);
-              SmartDashboard.putNumber("Blue", detectedColor.blue);
-              SmartDashboard.putNumber("Confidence", match.confidence);
-              SmartDashboard.putString("Detected Color", colorString_temp);
-              SmartDashboard.putNumber("Proximity", proximity);
+                theColor = "Green";
             }
           }
-          colorString = colorString_temp;
-          }
+        //  }
       }
     }
     else
     {
-      colorString = "Too Far Away";
-      SmartDashboard.putNumber("Red", detectedColor.red);
-      SmartDashboard.putNumber("Green", detectedColor.green);
-      SmartDashboard.putNumber("Blue", detectedColor.blue);
-      SmartDashboard.putNumber("Confidence", match.confidence);
-      SmartDashboard.putString("Detected Color", colorString);
-      SmartDashboard.putNumber("Proximity", proximity);
+      theColor = "Too Far Away";
     }
-      
-  }
+    SmartDashboard.putString("Detected Color", theColor);
 }
+}
+  
