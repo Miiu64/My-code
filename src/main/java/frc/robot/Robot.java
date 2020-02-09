@@ -37,20 +37,25 @@ public class Robot extends TimedRobot {
   }
 
 
-  public void getColor() {
+  public void getColor() 
+  {
     int proximity = m_colorSensor.getProximity();
     Color detectedColor = m_colorSensor.getColor();
     ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);
     String colorString = "initialized colorstring";
     if (proximity > 190)
     {
-      if (match.color == kBlueTarget) {
+      if (match.color == kBlueTarget) 
+      {
         colorString = "Blue";
-      } else if (match.color == kRedTarget) {
+      } else if (match.color == kRedTarget) 
+      {
         colorString = "Red";
-      } else if (match.color == kGreenTarget) {
+      } else if (match.color == kGreenTarget) 
+      {
         colorString = "Green";
-      } else if (match.color == kYellowTarget) {
+      } else if (match.color == kYellowTarget) 
+      {
         colorString = "Yellow";
       }
       else
@@ -62,7 +67,7 @@ public class Robot extends TimedRobot {
 
       for (int i = 999; i > 0; i--)
       {
-
+        
       }
       Color detectedColor_temp = m_colorSensor.getColor();
       ColorMatchResult match_temp = m_colorMatcher.matchClosestColor(detectedColor_temp);
@@ -80,16 +85,11 @@ public class Robot extends TimedRobot {
 
       if (!colorString_temp.equals(colorString))
       {
-       // while (true)
-       //{
           if (colorString.equals("Yellow"))
           {
             if (colorString_temp.equals("Blue") && !colorString_temp.equals("Green"))
             {
-            //  while(!colorString_temp.equals("Blue") || colorString_temp.equals("Green"))
-              //{
                 theColor = "Blue";
-              //}
             }
           }
           else if (colorString.equals("Green"))
@@ -113,7 +113,6 @@ public class Robot extends TimedRobot {
                 theColor = "Green";
             }
           }
-        //  }
       }
     }
     else
