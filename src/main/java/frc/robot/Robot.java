@@ -4,6 +4,13 @@ import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
+
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -35,6 +42,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() 
   {
     getColor();
+    PositionControl();
   }
 
 
@@ -122,9 +130,22 @@ public class Robot extends TimedRobot {
     }
     SmartDashboard.putString("Detected Color", theColor);
 }
+
+@Override
+public void teleopInit(){
+  Camera();
+}
+@Override
+public void teleopPeriodic()
+{
+  
+
+}
 public void PositionControl()
 {
-  String destColor = DriverStation.getInstance().getGameSpecificMessage();
+  SmartDashboard.putString("Position Color", "Keep spinning");
+  String destColor = "Yellow";
+  
   if (destColor.equals("Yellow"))
   {
     destColor = "Green";
@@ -141,10 +162,31 @@ public void PositionControl()
   {
     destColor = "Blue";
   }
-  if (!theColor.equals(destColor))
+  if (theColor.equals(destColor))
   {
-    RobotContainer.frictionWheel.setMotorSpeed(Constants.frictionWheelSpeed);
+    SmartDashboard.putString("Position Color", "Stop");
   }
 }
+public void Camera()
+{
+  new Thread(() -> {
+    UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+    camera.setResolution(640, 480);
+
+    CvSink cvSink = CameraServer.getInstance().getVideo();
+    CvSource outputStream = CameraServer.getInstance().putVideo("Blur", 640, 480);
+
+    Mat source = new Mat();
+    Mat output = new Mat();
+
+    while(!Thread.interrupted()) {
+      if (cvSink.grabFrame(source) == 0) {
+        continue;
+      }
+      Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
+      outputStream.putFrame(output);
+    }
+  }).start();
+} 
 }
   
