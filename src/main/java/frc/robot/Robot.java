@@ -1,5 +1,7 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
@@ -11,7 +13,6 @@ import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -22,12 +23,15 @@ public class Robot extends TimedRobot {
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
 
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
-  ColorMatch m_colorMatcher = new ColorMatch();
+  private final ColorMatch m_colorMatcher = new ColorMatch();
   private final Color kBlueTarget = ColorMatch.makeColor(0.231, 0.463, 0.305);
   private final Color kGreenTarget = ColorMatch.makeColor(0.240, 0.485, 0.274);
   private final Color kRedTarget = ColorMatch.makeColor(0.293, 0.452, 0.253);
   private final Color kYellowTarget = ColorMatch.makeColor(0.284, 0.491, 0.223); 
   private String theColor;
+  private WPI_TalonSRX frictionWheel = new WPI_TalonSRX(6);
+  private int counter = 0;
+
 
 
   @Override
@@ -41,8 +45,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() 
   {
-    getColor();
-    PositionControl();
+    
   }
 
 
@@ -133,19 +136,20 @@ public class Robot extends TimedRobot {
 
 @Override
 public void teleopInit(){
-  Camera();
 }
 @Override
 public void teleopPeriodic()
 {
-  
-
+  getColor();
+  if (counter == 0)
+  {
+  PositionControl();
+  }
 }
 public void PositionControl()
 {
-  SmartDashboard.putString("Position Color", "Keep spinning");
   String destColor = "Yellow";
-  
+
   if (destColor.equals("Yellow"))
   {
     destColor = "Green";
@@ -162,9 +166,15 @@ public void PositionControl()
   {
     destColor = "Blue";
   }
-  if (theColor.equals(destColor))
+  if (!theColor.equals(destColor))
   {
-    SmartDashboard.putString("Position Color", "Stop");
+    frictionWheel.set(0.5);  //0.3 is too fast because of intertia, 0.1 is too slow
+  }                          //Number being set on friction wheel
+  else                       //Test with Joystick
+  {
+    frictionWheel.set(0.0);                          //Check battery voltage
+   // frictionWheel.setNeutralMode(NeutralMode.Brake);  //Test with PID
+    counter = 1;
   }
 }
 public void Camera()
