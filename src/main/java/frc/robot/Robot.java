@@ -97,6 +97,7 @@ public class Robot extends TimedRobot {
 
       if (!colorString_temp.equals(colorString))
       {
+
           if (colorString.equals("Yellow"))
           {
             if (colorString_temp.equals("Blue") && !colorString_temp.equals("Green"))
@@ -141,14 +142,11 @@ public void teleopInit(){
 public void teleopPeriodic()
 {
   getColor();
-  if (counter == 0)
-  {
   PositionControl();
-  }
 }
 public void PositionControl()
 {
-  String destColor = "Yellow";
+  String destColor = "Green";
 
   if (destColor.equals("Yellow"))
   {
@@ -168,13 +166,20 @@ public void PositionControl()
   }
   if (!theColor.equals(destColor))
   {
-    frictionWheel.set(0.5);  //0.3 is too fast because of intertia, 0.1 is too slow
+    frictionWheel.set(0.3);  //0.3 is too fast because of intertia, 0.1 is too slow
   }                          //Number being set on friction wheel
   else                       //Test with Joystick
   {
-    frictionWheel.set(0.0);                          //Check battery voltage
-   // frictionWheel.setNeutralMode(NeutralMode.Brake);  //Test with PID
-    counter = 1;
+    frictionWheel.setNeutralMode(NeutralMode.Brake);
+    frictionWheel.set(0.0);
+    frictionWheel.stopMotor();
+    frictionWheel.set(-0.5);
+    frictionWheel.setNeutralMode(NeutralMode.Brake);
+    frictionWheel.set(0.0);
+    frictionWheel.stopMotor();
+   /* frictionWheel.set(0.1);
+    frictionWheel.setNeutralMode(NeutralMode.Brake);
+    frictionWheel.set(0.0); */
   }
 }
 public void Camera()
