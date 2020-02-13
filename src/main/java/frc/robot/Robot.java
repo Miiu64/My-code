@@ -13,6 +13,7 @@ import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,7 +31,6 @@ public class Robot extends TimedRobot {
   private final Color kYellowTarget = ColorMatch.makeColor(0.284, 0.491, 0.223); 
   private String theColor;
   private WPI_TalonSRX frictionWheel = new WPI_TalonSRX(6);
-  private int counter = 0;
 
 
 
@@ -146,7 +146,7 @@ public void teleopPeriodic()
 }
 public void PositionControl()
 {
-  String destColor = "Green";
+  String destColor = DriverStation.getInstance().getGameSpecificMessage();
 
   if (destColor.equals("Yellow"))
   {
@@ -173,7 +173,6 @@ public void PositionControl()
     frictionWheel.setNeutralMode(NeutralMode.Brake);
     frictionWheel.set(0.0);
     frictionWheel.stopMotor();
-    frictionWheel.set(-0.5);
     frictionWheel.setNeutralMode(NeutralMode.Brake);
     frictionWheel.set(0.0);
     frictionWheel.stopMotor();
