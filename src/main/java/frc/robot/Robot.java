@@ -148,19 +148,19 @@ public void PositionControl()
 {
   String destColor = DriverStation.getInstance().getGameSpecificMessage();
 
-  if (destColor.equals("Yellow"))
+  if (destColor.equals("Y"))
   {
     destColor = "Green";
   }
-  else if (destColor.equals("Blue"))
+  else if (destColor.equals("B"))
   {
     destColor = "Red";
   }
-  else if (destColor.equals("Green"))
+  else if (destColor.equals("G"))
   {
     destColor = "Yellow";
   }
-  else if (destColor.equals("Red"))
+  else if (destColor.equals("R"))
   {
     destColor = "Blue";
   }
