@@ -1,14 +1,14 @@
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 
-import edu.wpi.first.cameraserver.CameraServer;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
@@ -24,7 +24,7 @@ public class Robot extends TimedRobot {
   private final Color kRedTarget = ColorMatch.makeColor(0.293, 0.452, 0.253);
   private final Color kYellowTarget = ColorMatch.makeColor(0.284, 0.491, 0.223); 
   private String theColor;
-  private WPI_TalonSRX frictionWheel = new WPI_TalonSRX(6);
+  private Spark frictionWheel = new Spark(2);
 
 
 
@@ -39,8 +39,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() 
   {
-    
-  }
+
+    }
 
 
   public void getColor() 
@@ -71,10 +71,6 @@ public class Robot extends TimedRobot {
       
       theColor = colorString;
 
-      for (int i = 999; i > 0; i--)
-      {
-        
-      }
       Color detectedColor_temp = m_colorSensor.getColor();
       ColorMatchResult match_temp = m_colorMatcher.matchClosestColor(detectedColor_temp);
       String colorString_temp = "initialized coloring temp";
@@ -160,24 +156,14 @@ public void PositionControl()
   }
   if (!theColor.equals(destColor))
   {
-    frictionWheel.set(0.3);  //0.3 is too fast because of intertia, 0.1 is too slow
-  }                          //Number being set on friction wheel
-  else                       //Test with Joystick
+    frictionWheel.set(0.3);  
+  }                          
+  else                       
   {
-    frictionWheel.setNeutralMode(NeutralMode.Brake);
-    frictionWheel.set(0.0);
-    frictionWheel.stopMotor();
-    frictionWheel.setNeutralMode(NeutralMode.Brake);
-    frictionWheel.set(0.0);
-    frictionWheel.stopMotor();
-   /* frictionWheel.set(0.1);
-    frictionWheel.setNeutralMode(NeutralMode.Brake);
-    frictionWheel.set(0.0); */
+   frictionWheel.set(0.0);
+   frictionWheel.stopMotor();
   }
 }
-public void Camera()
-{
-  CameraServer.getInstance().startAutomaticCapture();
-} 
+
 }
   
